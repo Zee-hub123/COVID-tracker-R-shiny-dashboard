@@ -8,6 +8,7 @@
 #
 
 
+
 server <- function(input, output) {
     
     
@@ -243,8 +244,8 @@ server <- function(input, output) {
                            size = ~conall, color = ~State, colors = 'Paired',
                            marker = list(opacity = 0.5, sizemode = 'diameter'))
             fig <- fig %>% layout(title = 'Weekly vs Daily case growth',
-                                  xaxis = list(title = "Daily average case count",showgrid = TRUE),
-                                  yaxis = list(title = "Weekly average case count",showgrid = TRUE),
+                                  xaxis = list(title = "Daily average case rate",showgrid = TRUE),
+                                  yaxis = list(title = "Weekly average case rate",showgrid = TRUE),
                                   showlegend = FALSE)
             
             
@@ -259,8 +260,8 @@ server <- function(input, output) {
                           size = ~deathall, color = ~State, colors = 'Paired',
                           marker = list(opacity = 0.5, sizemode = 'diameter'))
         fig2 <- fig2 %>% layout(title = 'Weekly vs Daily death growth',
-                                xaxis = list(title = "Daily average death count",showgrid = TRUE),
-                                yaxis = list(title = "Weekly average death count",showgrid = TRUE),
+                                xaxis = list(title = "Daily average death rate",showgrid = TRUE),
+                                yaxis = list(title = "Weekly average death rate",showgrid = TRUE),
                                 showlegend = FALSE)
         
         
@@ -273,8 +274,8 @@ server <- function(input, output) {
                           size = ~vacall, color = ~State, colors = 'Paired',
                           marker = list(opacity = 0.5, sizemode = 'diameter'))
         fig3 <- fig3 %>% layout(title = 'Weekly vs Daily death growth',
-                                xaxis = list(title = "Daily average vaccination count",showgrid = TRUE),
-                                yaxis = list(title = "Weekly average vaccination count",showgrid = TRUE),
+                                xaxis = list(title = "Daily average vaccination rate",showgrid = TRUE),
+                                yaxis = list(title = "Weekly average vaccination rate",showgrid = TRUE),
                                 showlegend = FALSE)
         
         
@@ -289,7 +290,6 @@ server <- function(input, output) {
     
     
 }
-
 
 
 
