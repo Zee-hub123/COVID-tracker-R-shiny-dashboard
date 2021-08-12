@@ -1,53 +1,60 @@
 
 
+#Load the packages required for this app
 #load the libraries
 
 
-library(readxl)
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(ggplot2)
-library(broom)
-library(stringr)
-library(data.table)
-library(tidyverse)
-library(corrplot)
-library(ggthemes)
-library("highcharter")
-library(plotly)
-library(shinydashboard)
-library(shiny)
-library(ggthemes)
-library(rgdal)
-library(rlang)
-library(maps)
-library(rsconnect)
+if(!require(ggthemes)) install.packages("ggthemes", repos = "http://cran.us.r-project.org")
+if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.org")
+if(!require(readxl)) install.packages("readxl", repos = "http://cran.us.r-project.org")
+if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if(!require(maps)) install.packages("maps", repos = "http://cran.us.r-project.org")
+if(!require(ggplot2)) install.packages("ggplot2", repos = "http://cran.us.r-project.org")
+if(!require(stringr)) install.packages("stringr", repos = "http://cran.us.r-project.org")
+if(!require(purrr)) install.packages("purr", repos = "http://cran.us.r-project.org")
+if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+if(!require(rlang)) install.packages("rlang", repos = "http://cran.us.r-project.org")
+if(!require(plotly)) install.packages("plotly", repos = "http://cran.us.r-project.org")
+if(!require(highcharter)) install.packages("highcharter", repos = "http://cran.us.r-project.org")
+if(!require(shiny)) install.packages("shiny", repos = "http://cran.us.r-project.org")
+if(!require(rsconnect)) install.packages("rsconnect", repos = "http://cran.us.r-project.org")
+if(!require(shinydashboard)) install.packages("shinydashboard", repos = "http://cran.us.r-project.org")
+if(!require(shinythemes)) install.packages("shinythemes", repos = "http://cran.us.r-project.org")
 
 
-#setwd(file.path("e:/Users/riddh/Desktop/Harrisburg/ANLY580/COVID_project"))
 
-#state dataset with state description
-state <- read_excel("statecodes.xls")
+
+
+#Data manipulation
+
+state <- read.csv("https://raw.githubusercontent.com/Zee-hub123/COVID-tracker-R-shiny-dashboard/main/statecodes.csv")
+
 
 
 #creating a new dataset by joining with the state name dataset
-urlall = "https://api.covidactnow.org/v2/states.timeseries.csv?apiKey=e82277772cee436d8ef9aab5d0eaa1e7"
-stateall <- read_csv(url(urlall))
+#urlall = "https://api.covidactnow.org/v2/states.timeseries.csv?apiKey=e82277772cee436d8ef9aab5d0eaa1e7"
+#stateall <-  read_csv(url(urlall))
 
+urlall = "https://api.covidactnow.org/v2/states.timeseries.csv?apiKey=e82277772cee436d8ef9aab5d0eaa1e7"
+stateallcsv <-  read_csv(url(urlall))
+
+saveRDS(stateallcsv, file = "stateallcsv.rds")
+stateall <- readRDS("stateallcsv.rds")
+
+
+
+#memory.limit(9999)
 
 names(stateall)[names(stateall) == "state"] <- "StateCode"
 
 names(state)[names(state) == "Code"] <- "StateCode"
-
-
 
 datastate <- left_join(stateall,state, by= c("StateCode"))
 
 #View(datastate)
 
 state_list <- c(levels(as.factor(datastate$State)))
-state_list
+#state_list
 
 #changing the names of the variables
 names(datastate)[names(datastate) == "actuals.cases"] <- "confirmed"
@@ -89,9 +96,9 @@ agg <- d %>%
 
 
 
-df <- datastate
-
 us_states <- map_data("state")
+
+df <- datastate
 
 # Compute weekly & daily growth rates
 map_df <- df %>% 
@@ -111,6 +118,8 @@ datanew <- map_df[c(-6,-7)]
 datanew$region <- tolower(datanew$State)
 map_df1 <- left_join(us_states, datanew, by="region", sep = " ", collapse= NULL)
 
+#memory.limit(99999)
+
 #View(map_df1)
 
 
@@ -118,6 +127,8 @@ map_df1 <- left_join(us_states, datanew, by="region", sep = " ", collapse= NULL)
 m <- subset(map_df1, 
             select=c(State, StateCode,vaccinated, deaths, confirmed, Weekly_casegrowth, Daily_casegrowth,
                      Weekly_vaccinationgrowth, Daily_vaccinationgrowth, Weekly_deceasedgrowth, Daily_deceasedgrowth, date))
+
+m$date <- as.Date(m$date)
 
 mon <- m %>% 
   mutate(month = format(m$date,"%m")) %>%
@@ -149,5 +160,5 @@ meandata <- mon %>%
 #removing the last row with NAs
 meandata <- head(meandata, -1)
 
-
-
+# Run the application 
+#shinyApp(ui = ui, server = server)
