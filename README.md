@@ -1,7 +1,7 @@
 # COVID-tracker-R-shiny-dashboard
 COVID tracker R shiny dashboard
 
-This app consists of 5 different tabs.
+This app consists of 5 different tabs. This app extracts dynamic data directly from the server and is refreshed every day. Run this app on your local for the desired output.
 
 About this app:
 
