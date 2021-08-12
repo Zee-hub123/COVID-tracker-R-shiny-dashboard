@@ -11,7 +11,6 @@
 
 
 
-
 ui <- dashboardPage( skin="blue",
                      dashboardHeader(title = "COVID-19 Dashboard"),
                      dashboardSidebar(
@@ -135,7 +134,7 @@ ui <- dashboardPage( skin="blue",
                                                        
                                                        selectInput(inputId = "mon",
                                                                    label = "Select a month",
-                                                                   choices = unique(meandata$month)
+                                                                   choices = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
                                                                    
                                                        ),
                                                        
